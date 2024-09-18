@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class ProductController {
 
@@ -47,9 +49,15 @@ public class ProductController {
 
     @DeleteMapping("/products/{productId}")
     public ResponseEntity<?> deleteProduct(@PathVariable Integer productId){
-        productService.deleteProduct(productId);
+            productService.deleteProduct(productId);
 
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
+
+    @GetMapping("/products/getProducts")
+    public ResponseEntity<List<Product>> getProducts(){
+            List<Product> productList = productService.getProducts();
+        return ResponseEntity.status(HttpStatus.OK).body(productList);
+    }
 }
