@@ -1,5 +1,6 @@
 package com.grace.springbootmall.service;
 
+import com.grace.springbootmall.constant.ProductCategory;
 import com.grace.springbootmall.dao.ProductDao;
 import com.grace.springbootmall.dto.ProductRequest;
 import com.grace.springbootmall.model.Product;
@@ -35,7 +36,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<Product> getProducts(String category, String search) {
+    public List<Product> getProducts(ProductCategory category, String search) {
        return productDao.getProducts(category, search);
     }
 }

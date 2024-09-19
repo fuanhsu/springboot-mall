@@ -1,5 +1,6 @@
 package com.grace.springbootmall.dao;
 
+import com.grace.springbootmall.constant.ProductCategory;
 import com.grace.springbootmall.dto.ProductRequest;
 import com.grace.springbootmall.model.Product;
 import com.grace.springbootmall.rowmapper.ProductRowMapper;
@@ -98,13 +99,14 @@ public class ProductDaoImpl implements ProductDao{
     }
 
     @Override
-    public List<Product> getProducts(String category, String search) {
+    public List<Product> getProducts(ProductCategory category, String search) {
         String sql = "SELECT product_id, product_name, stock, price, category, image_url, description, created_date, last_modified_date FROM product " +
                 "where 1=1 ";
         Map<String, Object> map = new HashMap<>();
         if (category != null) {
             sql += " and category =  :category";
-            map.put("category", category);
+            //注意 enum 取值
+            map.put("category", category.name());
         }
         if (search != null) {
             sql += " and product_name like :search";
