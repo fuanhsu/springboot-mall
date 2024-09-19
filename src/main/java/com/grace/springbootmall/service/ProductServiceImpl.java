@@ -3,6 +3,7 @@ package com.grace.springbootmall.service;
 import com.grace.springbootmall.constant.ProductCategory;
 import com.grace.springbootmall.dao.ProductDao;
 import com.grace.springbootmall.dto.ProductRequest;
+import com.grace.springbootmall.dto.ProductRequestParams;
 import com.grace.springbootmall.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,7 +37,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<Product> getProducts(ProductCategory category, String search) {
-       return productDao.getProducts(category, search);
+    public List<Product> getProducts(ProductRequestParams productRequestParams) {
+       return productDao.getProducts(productRequestParams);
     }
 }

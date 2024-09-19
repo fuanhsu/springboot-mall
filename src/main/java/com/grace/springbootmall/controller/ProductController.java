@@ -2,6 +2,7 @@ package com.grace.springbootmall.controller;
 
 import com.grace.springbootmall.constant.ProductCategory;
 import com.grace.springbootmall.dto.ProductRequest;
+import com.grace.springbootmall.dto.ProductRequestParams;
 import com.grace.springbootmall.model.Product;
 import com.grace.springbootmall.service.ProductService;
 import jakarta.validation.Valid;
@@ -59,7 +60,10 @@ public class ProductController {
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getProducts(@RequestParam(required = false) ProductCategory category,
                                                      @RequestParam(required = false) String search){
-            List<Product> productList = productService.getProducts(category, search);
+        ProductRequestParams productRequestParams = new ProductRequestParams();
+        productRequestParams.setCategory(category);
+        productRequestParams.setSearch(search);
+            List<Product> productList = productService.getProducts(productRequestParams);
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
 }

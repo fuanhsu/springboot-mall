@@ -1,7 +1,7 @@
 package com.grace.springbootmall.dao;
 
-import com.grace.springbootmall.constant.ProductCategory;
 import com.grace.springbootmall.dto.ProductRequest;
+import com.grace.springbootmall.dto.ProductRequestParams;
 import com.grace.springbootmall.model.Product;
 
 import java.util.List;
@@ -15,5 +15,5 @@ public interface ProductDao {
 
     void deleteProduct(Integer productId);
 
-    List<Product> getProducts(ProductCategory category, String search);
+    List<Product> getProducts(ProductRequestParams productRequestParams);
 }

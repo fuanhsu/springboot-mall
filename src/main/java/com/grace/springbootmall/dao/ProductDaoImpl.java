@@ -2,6 +2,7 @@ package com.grace.springbootmall.dao;
 
 import com.grace.springbootmall.constant.ProductCategory;
 import com.grace.springbootmall.dto.ProductRequest;
+import com.grace.springbootmall.dto.ProductRequestParams;
 import com.grace.springbootmall.model.Product;
 import com.grace.springbootmall.rowmapper.ProductRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,18 +100,18 @@ public class ProductDaoImpl implements ProductDao{
     }
 
     @Override
-    public List<Product> getProducts(ProductCategory category, String search) {
+    public List<Product> getProducts(ProductRequestParams productRequestParams) {
         String sql = "SELECT product_id, product_name, stock, price, category, image_url, description, created_date, last_modified_date FROM product " +
                 "where 1=1 ";
-        Map<String, Object> map = new HashMap<>();
-        if (category != null) {
+        HashMap<String, Object> map = new HashMap<>();
+        if (productRequestParams.getCategory() != null) {
             sql += " and category =  :category";
             //注意 enum 取值
-            map.put("category", category.name());
+            map.put("category", productRequestParams.getCategory().name());
         }
-        if (search != null) {
+        if (productRequestParams.getSearch() != null) {
             sql += " and product_name like :search";
-            map.put("search", "%" + search + "%");
+            map.put("search", "%" + productRequestParams.getSearch() + "%");
         }
 
         List<Product> products = namedParameterJdbcTemplate.query(sql,map, new ProductRowMapper());
