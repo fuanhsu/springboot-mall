@@ -19,6 +19,20 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @GetMapping("/products")
+    public ResponseEntity<List<Product>> getProducts(@RequestParam(required = false) ProductCategory category,
+                                                     @RequestParam(required = false) String search,
+                                                     @RequestParam(defaultValue = "created_date") String orderBy,
+                                                     @RequestParam(defaultValue = "desc") String sort){
+        ProductRequestParams productRequestParams = new ProductRequestParams();
+        productRequestParams.setCategory(category);
+        productRequestParams.setSearch(search);
+        productRequestParams.setOrderBy(orderBy);
+        productRequestParams.setSort(sort);
+        List<Product> productList = productService.getProducts(productRequestParams);
+        return ResponseEntity.status(HttpStatus.OK).body(productList);
+    }
+
     @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProductById(@PathVariable Integer productId){
         Product product = productService.getProductById(productId);
@@ -57,13 +71,5 @@ public class ProductController {
     }
 
 
-    @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(@RequestParam(required = false) ProductCategory category,
-                                                     @RequestParam(required = false) String search){
-        ProductRequestParams productRequestParams = new ProductRequestParams();
-        productRequestParams.setCategory(category);
-        productRequestParams.setSearch(search);
-            List<Product> productList = productService.getProducts(productRequestParams);
-        return ResponseEntity.status(HttpStatus.OK).body(productList);
-    }
+
 }
