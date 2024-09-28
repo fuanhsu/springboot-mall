@@ -20,7 +20,7 @@ public class UserController {
 
     @PostMapping("/users/register")
     public ResponseEntity<User> register(@RequestBody @Valid UserRegisterRequest userRegisterReques) {
-            Integer userId = userService.createUser(userRegisterReques);
+            Integer userId = userService.register(userRegisterReques);
             User user = userService.getUserById(userId);
         return  ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
