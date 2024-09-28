@@ -1,17 +1,17 @@
-package com.grace.springbootmall.service;
+package com.grace.springbootmall.service.Impl;
 
-import com.grace.springbootmall.constant.ProductCategory;
 import com.grace.springbootmall.dao.ProductDao;
 import com.grace.springbootmall.dto.ProductRequest;
 import com.grace.springbootmall.dto.ProductRequestParams;
 import com.grace.springbootmall.model.Product;
+import com.grace.springbootmall.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
 
     @Autowired
     ProductDao productDao;

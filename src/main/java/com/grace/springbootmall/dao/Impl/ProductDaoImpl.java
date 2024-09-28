@@ -1,6 +1,6 @@
-package com.grace.springbootmall.dao;
+package com.grace.springbootmall.dao.Impl;
 
-import com.grace.springbootmall.constant.ProductCategory;
+import com.grace.springbootmall.dao.ProductDao;
 import com.grace.springbootmall.dto.ProductRequest;
 import com.grace.springbootmall.dto.ProductRequestParams;
 import com.grace.springbootmall.model.Product;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class ProductDaoImpl implements ProductDao{
+public class ProductDaoImpl implements ProductDao {
 
     @Autowired
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
