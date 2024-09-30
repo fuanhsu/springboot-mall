@@ -1,5 +1,6 @@
 package com.grace.springbootmall.dao;
 
+import com.grace.springbootmall.dto.UserLoginRequest;
 import com.grace.springbootmall.dto.UserRegisterRequest;
 import com.grace.springbootmall.model.User;
 
@@ -9,6 +10,8 @@ public interface UserDao {
 
     User getUserById(Integer userId);
 
-    User getUserByEmail(UserRegisterRequest userRegisterRequest);
+    User getUserByEmail(String email);
+
+    User login(UserLoginRequest userLoginRequest);
 
 }

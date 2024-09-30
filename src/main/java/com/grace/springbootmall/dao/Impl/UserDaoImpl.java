@@ -1,6 +1,7 @@
 package com.grace.springbootmall.dao.Impl;
 
 import com.grace.springbootmall.dao.UserDao;
+import com.grace.springbootmall.dto.UserLoginRequest;
 import com.grace.springbootmall.dto.UserRegisterRequest;
 import com.grace.springbootmall.model.User;
 import com.grace.springbootmall.rowmapper.UserRowMapper;
@@ -55,13 +56,18 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getUserByEmail(UserRegisterRequest userRegisterRequest) {
+    public User getUserByEmail(String email) {
         String sql = "SELECT user_id,email, password, created_date, last_modified_date FROM user WHERE email = :email";
         Map map = new HashMap<>();
-        map.put("email", userRegisterRequest.getEmail());
+        map.put("email", email);
 
         List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
 
         return userList.size() > 0 ? userList.get(0) : null;
+    }
+
+    @Override
+    public User login(UserLoginRequest userLoginRequest) {
+        return null;
     }
 }
