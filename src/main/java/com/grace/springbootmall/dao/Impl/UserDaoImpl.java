@@ -26,6 +26,7 @@ public class UserDaoImpl implements UserDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     @Override
     public Integer createUser(UserRegisterRequest userRegisterRequest) {
+
         String sql = "INSERT INTO user (email, password, created_date, last_modified_date) values(:email , :password, :createdDate,  :lastModifiedDate); ";
 
         Map map = new HashMap<>();

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 
@@ -25,11 +26,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer register(UserRegisterRequest userRegisterRequest){
         User user = userDao.getUserByEmail(userRegisterRequest.getEmail());
+
         if (user != null) {
             log.warn("email {} 帳號已存在",   userRegisterRequest.getEmail());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         }
+
+        String hashedPassword = DigestUtils.md5DigestAsHex(userRegisterRequest.getPassword().getBytes());
+        userRegisterRequest.setPassword(hashedPassword);
         return userDao.createUser(userRegisterRequest);
     }
 
@@ -44,10 +49,17 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             log.warn("email {} 帳號不存在" , userLoginRequest.getEmail());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        } else if (userLoginRequest.getPassword().equals(user.getPassword())) {
-            return user;
         }
-       return null;
+
+        String hashedPassword = DigestUtils.md5DigestAsHex(userLoginRequest.getPassword().getBytes());
+        if (hashedPassword.equals(user.getPassword())) {
+            return user;
+        } else {
+            log.warn("email {} 密碼不正確" , userLoginRequest.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+
     }
 
 
