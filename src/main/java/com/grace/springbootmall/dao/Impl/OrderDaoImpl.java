@@ -1,6 +1,7 @@
 package com.grace.springbootmall.dao.Impl;
 
 import com.grace.springbootmall.dao.OrderDao;
+import com.grace.springbootmall.dto.OrderRequestParams;
 import com.grace.springbootmall.model.Order;
 import com.grace.springbootmall.model.OrderItem;
 import com.grace.springbootmall.rowmapper.OrderItemRowMapper;
@@ -12,10 +13,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class OrderDaoImpl implements OrderDao {
@@ -80,6 +78,46 @@ public class OrderDaoImpl implements OrderDao {
         map.put("orderId", orderId);
 
         return namedParameterJdbcTemplate.query(sql, map, new OrderItemRowMapper());
+    }
+
+
+
+    @Override
+    public List<Order> getOrders(OrderRequestParams orderRequestParams) {
+        String sql = "SELECT order_id, user_id, total_amount, created_date, last_modified_date FROM `order` " +
+                "WHERE 1 = 1 ";
+        Map<String, Object> map = new HashMap<>();
+        sql = addFilterSql(sql, map, orderRequestParams);
+
+        sql += "ORDER BY created_date DESC ";
+
+        sql += "LIMIT :limit OFFSET :offset ";
+
+        map.put("limit", orderRequestParams.getLimit());
+        map.put("offset", orderRequestParams.getOffset());
+
+
+        List<Order> orderList = namedParameterJdbcTemplate.query(sql, map,  new OrderRowMapper());
+
+
+        return orderList;
+    }
+
+    private String addFilterSql(String sql, Map<String, Object> map, OrderRequestParams orderRequestParams) {
+        if (orderRequestParams.getUserId() != null) {
+            sql += "AND user_id = :userId ";
+            map.put("userId", orderRequestParams.getUserId());
+        }
+        return sql;
+    }
+
+    @Override
+    public Integer countOrder(OrderRequestParams orderRequestParams) {
+        String sql = "SELECT count(*) FROM `order` WHERE 1 = 1 ";
+        Map<String, Object> map = new HashMap<>();
+        sql = addFilterSql(sql, map, orderRequestParams);
+
+        return namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
     }
 
 }

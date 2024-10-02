@@ -1,5 +1,6 @@
 package com.grace.springbootmall.dao;
 
+import com.grace.springbootmall.dto.OrderRequestParams;
 import com.grace.springbootmall.model.Order;
 import com.grace.springbootmall.model.OrderItem;
 
@@ -10,5 +11,7 @@ public interface OrderDao {
     void createOrderItem(Integer orderId, List<OrderItem> orderItemList);
     Order getOrderById(Integer orderId);
     List<OrderItem> getOrderItemByOrderId(Integer orderId);
+    List<Order> getOrders(OrderRequestParams orderRequestParams);
+    Integer countOrder(OrderRequestParams orderRequestParams);
 
 }

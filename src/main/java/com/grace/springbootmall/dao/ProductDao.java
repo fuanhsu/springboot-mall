@@ -16,4 +16,6 @@ public interface ProductDao {
     void deleteProduct(Integer productId);
 
     List<Product> getProducts(ProductRequestParams productRequestParams);
+
+    void updateStock(Integer productId,Integer quantity);
 }
