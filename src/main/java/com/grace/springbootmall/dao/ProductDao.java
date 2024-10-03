@@ -18,4 +18,6 @@ public interface ProductDao {
     List<Product> getProducts(ProductRequestParams productRequestParams);
 
     void updateStock(Integer productId,Integer quantity);
+
+    Integer countProduct(ProductRequestParams productRequestParams);
 }

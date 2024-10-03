@@ -69,7 +69,7 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public void updateProduct(Integer productId, ProductRequest productRequest) {
         String sql = "UPDATE product SET category = :category,  " +
-                "product_name = :productName," +
+                "product_name = :productName, " +
                 "price = :price,  " +
                 "stock = :stock, " +
                 " image_url = :imageUrl, " +
@@ -104,6 +104,20 @@ public class ProductDaoImpl implements ProductDao {
         String sql = "SELECT product_id, product_name, stock, price, category, image_url, description, created_date, last_modified_date FROM product " +
                 "WHERE 1=1 ";
         HashMap<String, Object> map = new HashMap<>();
+
+        sql = addFilterSql(sql, map, productRequestParams);
+
+
+        sql += "ORDER BY " + productRequestParams.getOrderBy() + " " + productRequestParams.getSort() + " ";
+        sql += "LIMIT :limit OFFSET :offset ";;
+        map.put("limit", productRequestParams.getLimit());
+        map.put("offset", productRequestParams.getOffset());
+
+        List<Product> products = namedParameterJdbcTemplate.query(sql,map, new ProductRowMapper());
+        return products;
+    }
+
+    private String addFilterSql(String sql, HashMap<String, Object> map, ProductRequestParams productRequestParams) {
         if (productRequestParams.getCategory() != null) {
             sql += "AND category =  :category ";
             //注意 enum 取值
@@ -113,14 +127,7 @@ public class ProductDaoImpl implements ProductDao {
             sql += "AND product_name like :search ";
             map.put("search", "%" + productRequestParams.getSearch() + "%");
         }
-
-        sql += "ORDER BY " + productRequestParams.getOrderBy() + " " + productRequestParams.getSort() + " ";
-        sql += "LIMIT :limit OFFSET :offset ";;
-        map.put("limit", productRequestParams.getLimit());
-        map.put("offset", productRequestParams.getOffset());
-
-        List<Product> products = namedParameterJdbcTemplate.query(sql,map, new ProductRowMapper());
-        return products;
+        return sql;
     }
 
     @Override
@@ -134,5 +141,15 @@ public class ProductDaoImpl implements ProductDao {
         map.put("lastModifiedDate", now);
 
         namedParameterJdbcTemplate.update(sql, map);
+    }
+
+    @Override
+    public Integer countProduct(ProductRequestParams productRequestParams) {
+
+        String sql = "SELECT count(*) FROM product WHERE 1=1 ";
+        HashMap<String, Object> map = new HashMap<>();
+        sql = addFilterSql(sql, map, productRequestParams);
+
+        return namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
     }
 }

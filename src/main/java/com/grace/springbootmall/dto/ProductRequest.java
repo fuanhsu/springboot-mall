@@ -1,7 +1,7 @@
 package com.grace.springbootmall.dto;
 
 import com.grace.springbootmall.constant.ProductCategory;
-import jakarta.annotation.Nonnull;
+
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
@@ -22,6 +22,7 @@ public class ProductRequest {
     private    Integer stock;
 
     private    String description;
+
 
 
     public Integer getStock() {
@@ -71,4 +72,7 @@ public class ProductRequest {
     public void setDescription(String description) {
         this.description = description;
     }
+
+
+
 }

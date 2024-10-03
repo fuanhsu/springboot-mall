@@ -18,4 +18,6 @@ public interface ProductService {
     void deleteProduct(Integer productId);
 
     List<Product> getProducts(ProductRequestParams productRequestParams);
+
+    Integer countProduct(ProductRequestParams productRequestParams);
 }

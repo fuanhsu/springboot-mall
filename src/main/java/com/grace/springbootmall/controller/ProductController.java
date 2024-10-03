@@ -43,11 +43,12 @@ public class ProductController {
         productRequestParams.setLimit(limit);
         productRequestParams.setOffset(offset);
         List<Product> productList = productService.getProducts(productRequestParams);
+        Integer count = productService.countProduct(productRequestParams);
 
         Page<Product> page = new Page<>();
         page.setLimit(limit);
         page.setOffset(offset);
-        page.setTotal(productList.size());
+        page.setTotal(count);
         page.setResults(productList);
         return ResponseEntity.status(HttpStatus.OK).body(page);
     }
@@ -86,7 +87,7 @@ public class ProductController {
     public ResponseEntity<?> deleteProduct(@PathVariable Integer productId){
             productService.deleteProduct(productId);
 
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
 
